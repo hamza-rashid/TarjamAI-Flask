@@ -3,8 +3,6 @@ import re
 import os
 import openai
 
-openai.api_key = "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"
-
 tokens=[]
 
 def check_quran(line):
