@@ -1,0 +1,716 @@
+<head>
+  <link href="https://releases.transloadit.com/uppy/v3.6.1/uppy.min.css" rel="stylesheet" />
+  <link href='https://fonts.googleapis.com/css?family=Manrope' rel='stylesheet'>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css"  rel="stylesheet" />
+
+
+
+  <style>
+    body {
+      background: linear-gradient(to top right, #2FB1BF, #2F2773);
+
+    }
+
+
+    .absolute-class {
+  position: relative;
+  top: 200;
+}
+    .subtitle {
+      font-family: 'Manrope', sans-serif;
+      font-size: 2vw;
+      font-size: 5vh;
+      font-weight: 900;
+      color: #ffffff;
+      text-align: center;
+      line-height: 6vh;
+      padding-right: 5%;
+      padding-left: 5%;
+
+
+    }
+    .subtitle span {
+      color: #FED678;
+    }
+    .flex-page {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      
+    }
+    .flex-loading {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      text-align: center;
+      width: 360;
+    }
+
+    #transcribing, #subtitling, #done {
+       margin-top: auto;
+    }
+
+    .text-center.absolute {
+      position: absolute;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .underline {
+    text-decoration-color: #FED678;
+    text-decoration-thickness: 3px;
+    text-underline-offset: 5px;
+    
+    }
+
+        @media screen and (max-width: 600px) {
+      .uppy-Root {
+        width: 100%;
+        height: 100%; /* change the height as needed */
+      }
+    }
+
+
+
+    #browse {
+      font-size: 4vh;
+      line-height: normal;
+      font-family: 'Manrope Bold', sans-serif;
+      font-weight: 500;
+      margin-top: -5px;
+      width: 40vh; 
+      height: 10vh;
+
+      
+    }
+    #trynow {
+      position: relative;
+      font-family: 'Manrope', sans-serif;
+      font-size: 3vh;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      margin-bottom: 20px;
+      margin-top: 5px;
+
+      animation: arrow-bounce 2s infinite;
+
+    }
+    .arrow {
+      display: block;
+      margin-top: 2px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    @keyframes arrow-bounce {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-1.5vh); }
+      100% { transform: translateY(0); }
+    }
+
+    #dropdownHover {
+      transform: translateX(-22%);
+    }
+
+    #dropdownHoverButton {
+    margin-top: 50px;
+    }
+
+    #popup-container {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 60%;
+      height: 60%;
+      background-color: white;
+      transform: translate3d(0, 100%, 0);
+      transition: transform 0.3s ease-out;
+      z-index: 999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: auto;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;    
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+
+    }
+
+    @media screen and (max-width: 800px) {
+      #popup-container {
+        width: 90%;
+      }
+    }
+
+    #popup-container.visible {
+      transform: translate3d(0, 0, 0);
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+
+    }
+
+      #popup-content {
+        height: 90%;
+        width: 95%;
+        overflow: auto;
+      }
+      #close-button {
+        position: absolute;
+        top: 15;
+        right: 20;
+      }
+      textarea:focus {
+    box-shadow: none;
+     }
+      #tashkeel {
+        position: relative;
+        top: 25;
+        margin-bottom: 13;
+
+      }
+      #translate{
+        position: relative;
+        top: 25;
+        height:auto;
+        margin-bottom: 13;
+        margin-right:200;
+        margin-left: 7;
+      }
+
+
+            @keyframes slide-in {
+        from {
+          transform: translateX(-75%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(-50%);
+          opacity: 1;
+        }
+      }
+
+      @keyframes slide-out {
+        from {
+          transform: translateX(-50%);
+          opacity: 1;
+        }
+        to {
+          transform: translateX(-25%);
+          opacity: 0;
+        }
+      }
+
+      #toast-simple {
+        animation-duration: 0.5s;
+        animation-timing-function: ease-out;
+      }
+
+      #toast-simple.slide-in {
+        animation-name: slide-in;
+      }
+
+      #toast-simple.slide-out {
+        animation-name: slide-out;
+      }
+
+
+
+      #submit{
+        position: absolute;
+        bottom: 25;
+        height:auto;
+        margin-bottom: 13;
+        right:60;
+
+      }
+
+      
+        
+  </style>
+</head>
+
+<body>
+  
+  <div class="flex-page" style="width: 100%;" >
+    
+    <div class="absolute-class text-center">
+    <h1 class="subtitle text-3xl mb-8 center">
+      Subtitle your <span class="underline">Qur'an recitations</span> and <span class="underline">Islamic videos</span> with the click of a button
+    </h1>
+
+    <div id="trynow" class="text-center" style="margin-top: 60px;">
+      <span>Try now</span>
+      <img class="arrow" src="{{ url_for('static', filename='images/down-arrow.png') }}" alt="arrow" height="35vw" width="35vw">
+    </div>
+    <button id="browse" type="button" class="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Upload Video</button>
+    <div id="player"></div>
+
+
+
+
+    <div class="text-center absolute" style ="margin-top: 60px;">
+    <h2 class="mb-2 text-lg font-Manrope font-Bold text-white dark:text-white"></h2>
+
+    <div id="transcribing" class="hidden relative" style="left:50;">
+    <ul class="max-w-md space-y-2 text-xl text-white font-Manrope list-inside dark:text-gray-400">
+        <li class="flex-loading items-center" style="font-size: larger;">
+            <svg aria-hidden="true" class="w-10 h-10 mr-1.5 text-green-400 dark:text-green-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+            Video uploaded!
+        </li>
+        <li class="flex-loading items-center" style="font-size: larger;">
+          <div role="status">
+            <svg aria-hidden="true" class="w-10 h-10 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/><path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/></svg>
+            <span class="sr-only">Loading...</span>
+        </div>            
+        Transcribing your audio
+        </li>
+    </ul>
+  </div>
+
+  <div id="subtitling" class="hidden relative" style="left:50;">
+    <ul class="max-w-md space-y-2 text-xl text-white font-Manrope list-inside dark:text-gray-400">
+      <li class="flex-loading items-center" style="font-size: larger;">
+          <svg aria-hidden="true" class="w-10 h-10 mr-1.5 text-green-400 dark:text-green-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+          Video uploaded!
+      </li>
+      <li class="flex-loading items-center" style="font-size: larger;">
+          <svg aria-hidden="true" class="w-10 h-10 mr-1.5 text-green-400 dark:text-green-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+          Audio Transcribed!
+      </li>
+      <li class="flex-loading items-center" style="font-size: larger;">
+          <div role="status">
+              <svg aria-hidden="true" class="w-10 h-10 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/><path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/></svg>
+              <span class="sr-only">Loading...</span>
+          </div>
+          Preparing your video
+      </li>
+  </ul>
+</div>
+
+
+  <div id="done" class="hidden relative" style="left:50;">
+  <ul class="max-w-md space-y-2 text-xl text-white font-Manrope list-inside dark:text-gray-400">
+    <li class="flex-loading items-center" style="font-size: larger;">
+        <svg aria-hidden="true" class="w-10 h-10 mr-1.5 text-green-400 dark:text-green-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+        Video uploaded!
+    </li>
+    <li class="flex-loading items-center" style="font-size: larger;">
+        <svg aria-hidden="true" class="w-10 h-10 mr-1.5 text-green-400 dark:text-green-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+        Audio Transcribed!
+    </li>
+    <li class="flex-loading items-center" style="font-size: larger;">
+      <svg aria-hidden="true" class="w-10 h-10 mr-1.5 text-green-400 dark:text-green-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+        Your Subtitled video is ready!
+    </li>
+</ul>
+</div>
+
+</div>
+
+<div class="hidden relative inline-block" id="dropdownHoverButton" style="top: 100px;">
+  <button data-dropdown-toggle="dropdownHover" data-dropdown-trigger="click" data-dropdown-delay="200" class=" inline-flex items-center justify-center p-5 text-base font-medium text-gray-500 rounded-lg bg-gray-50 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white" type="button">
+    <span class="w-full inline-flex items-center">
+      <span class="text-xl mr-3">&#128588;</span>
+      <span class="text-base">Download your Video!</span>
+    </span>
+    <svg aria-hidden="true" class="w-6 h-6 ml-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+  </button>
+  <div id="dropdownHover" class="hidden absolute z-10 bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 top-full right-0 mt-2" style="width: max-content;">
+    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownHoverButton">
+      <li id="freelink">
+        <a href="" target="_blank" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">2 minute video <span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">Free</span>
+        </a>
+      </li>
+      <li id="paidlink">
+        <a href="" target="_blank" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white pointer-events-none text-gray-400">Full length <span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">PRO</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+
+
+<!-- <button id="edit-button"> edit me </button> -->
+
+        <!-- Popup container -->
+        <div id="popup-container">
+          <div id="popup-content" class="hidden">
+            <!--<button id="close-button" type="button" class="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8 text-gray-500 hover:text-white bg-gray-800 hover:bg-gray-700" aria-label="Close">
+              <span class="sr-only">Close</span>
+              <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+            </button>  -->          
+          <!-- Content of the popup editor goes here -->
+
+
+          
+
+
+
+          
+
+
+
+
+
+
+
+
+          
+          <div class="border-dashed border-2 border-gray-400 border-b-2 h-96 w-full mx-auto">
+
+            <!-- ADD CHECK SUBTITLES TOAST -->
+            <div id="toast-simple" style="margin-top:10; left: 50%; transform: translateX(-50%);" class="invisible absolute flex items-center w-full max-w-xs p-4 space-x-4 text-gray-500 bg-white divide-x divide-gray-200 rounded-lg shadow dark:text-gray-400 dark:divide-gray-700 space-x dark:bg-gray-800" role="alert">
+              <svg aria-hidden="true" class="w-5 h-5 text-blue-600 dark:text-blue-500" focusable="false" data-prefix="fas" data-icon="paper-plane" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M511.6 36.86l-64 415.1c-1.5 9.734-7.375 18.22-15.97 23.05c-4.844 2.719-10.27 4.097-15.68 4.097c-4.188 0-8.319-.8154-12.29-2.472l-122.6-51.1l-50.86 76.29C226.3 508.5 219.8 512 212.8 512C201.3 512 192 502.7 192 491.2v-96.18c0-7.115 2.372-14.03 6.742-19.64L416 96l-293.7 264.3L19.69 317.5C8.438 312.8 .8125 302.2 .0625 289.1s5.469-23.72 16.06-29.77l448-255.1c10.69-6.109 23.88-5.547 34 1.406S513.5 24.72 511.6 36.86z"></path></svg>
+              <div class="pl-4 text-sm font-normal">Please check through your subtitles to ensure there are no mistakes.</div>
+            </div>
+
+            <button type="button" id="submit" style="font-size: large;"class="text-white bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-800 font-medium rounded-lg text-sm px-6 py-3.5 text-center mr-2 mb-2">Submit</button>
+
+            <textarea id="vttstring" class="block w-full h-full p-4 resize-none border-0 outline-none">
+
+             
+
+
+
+
+
+            </textarea>
+          </div>
+
+          </div>
+          </div>
+
+
+
+
+
+
+
+
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+  </div>
+</body>
+
+<script>
+
+//<!-- Add this script at the end of the body to handle the popup behavior -->
+
+  const editButton = document.getElementById('edit-button');
+  const popupContainer = document.getElementById('popup-container');
+  const popupContent = document.getElementById('popup-content')
+
+  editButton.addEventListener('click', () => {
+    popupContainer.classList.add('visible');
+    popupContent.classList.remove('hidden');
+
+      // Show the toast
+      const toastDiv = document.getElementById("toast-simple");
+      toastDiv.classList.remove("invisible");
+      toastDiv.classList.add("slide-in");
+
+      // Hide the toast after 5 seconds
+      setTimeout(function() {
+        toastDiv.classList.add("slide-out");
+        setTimeout(function() {
+          toastDiv.classList.add("invisible");
+          toastDiv.classList.remove("slide-out");
+        }, 500);
+      }, 5000);
+
+  });
+
+    // Add event listener to close button
+  document.getElementById("close-button").addEventListener("click", function() {
+    // Hide the popup
+    popupContainer.classList.remove('visible');
+    popupContent.classList.add('hidden');
+
+  });
+
+
+
+
+</script>
+
+<script type="module">
+  import {
+    Uppy,
+    Dashboard,
+    ImageEditor,
+    RemoteSources,
+    Transloadit,
+  } from 'https://releases.transloadit.com/uppy/v3.6.1/uppy.min.mjs'
+
+  const player = document.getElementById('player')
+  const uppy = new Uppy({
+  restrictions: {
+    maxFileSize: 25 * 1024 * 1024, // 25 MB in bytes
+    maxNumberOfFiles: 1,
+  },
+})
+    .use(Transloadit, {
+      waitForEncoding: true,
+      alwaysRunAssembly: true,
+      params: {
+        auth: {
+          key: '0d8f65ea184648c69a259928afab7c80',
+        },
+        steps: {
+          ":original": {
+            "robot": "/upload/handle"
+          },
+              "audio_from_video_extracted": {
+              "use": ":original",
+              "robot": "/video/encode",
+              "result": true,
+              "preset": "mp3",
+              "ffmpeg_stack": "v3.3.3",
+              "ffmpeg": {
+              "t": 180
+            },
+              "rotate": false,
+              "ffmpeg": {
+                "vn": true,
+                "codec:v": "none",
+                "map": [
+                  "0",
+                  "-0:d?",
+                  "-0:s?",
+                  "-0:v?"
+                ]
+              }
+            }
+        },
+      },
+    })
+    .use(Dashboard, { trigger: '#browse' })
+    .use(ImageEditor, { target: Dashboard })
+    .use(RemoteSources, {
+      companionUrl: 'https://api2.transloadit.com/companion',
+    })
+    .on('complete', ({ transloadit }) => {
+      transloadit.forEach((assembly) => {
+        const url = assembly.results.audio_from_video_extracted[0].ssl_url
+        const original_url = assembly.uploads[0].ssl_url
+        console.log(original_url)
+
+        // Add the "hidden" class to the try now text and upload button
+        const browsebutton = document.querySelector("#browse");
+        const tryNowDiv = document.getElementById('trynow');
+        browsebutton.classList.add("hidden");
+        tryNowDiv.style.display = 'none';
+
+        // Show the transcribing class
+        const transcribingclass = document.getElementById('transcribing');
+        transcribingclass.classList.remove("hidden");
+
+        const closebutton = document.querySelector('.uppy-Dashboard-close');
+        closebutton.click();
+
+
+
+        // Make AJAX request to Flask route
+       fetch('/update_url', {
+       method: 'POST',
+       body: JSON.stringify({ ssl_url: url, original_url:original_url}),
+       headers: {
+        'Content-Type': 'application/json'}
+      })
+
+      let intervalId = setInterval(updateSubtitledSslUrl, 5000);
+
+      function updateSubtitledSslUrl() {
+        // Make an AJAX request to the Flask app
+        fetch('/get_vtt_string')
+          .then(response => response.json())
+          .then(data => {
+            // Update the DOM with the subtitled_ssl_url
+            const get_vtt_string = data.get_vtt_string;
+            console.log(get_vtt_string);
+            const transcribingclass = document.getElementById('transcribing');
+            const subtitlingclass = document.getElementById('subtitling');
+            const popupContainer = document.getElementById('popup-container');
+            const popupContent = document.getElementById('popup-content');
+
+            // Stop the interval if subtitled_ssl_url is not null
+            if (get_vtt_string !== null) {
+              clearInterval(intervalId);
+              // Show the subtitling class
+              transcribingclass.classList.add("hidden");
+              subtitlingclass.classList.remove("hidden");
+
+              document.getElementById('vttstring').value = get_vtt_string;
+              popupContainer.classList.add('visible');
+              popupContent.classList.remove('hidden');
+
+              // POPUP TOAST
+              setTimeout(function() {
+                // Show the popup toast
+                const toastDiv = document.getElementById("toast-simple");
+                toastDiv.classList.remove("invisible");
+                toastDiv.classList.add("slide-in");
+
+                // Hide the toast after 5 seconds
+                setTimeout(function() {
+                  toastDiv.classList.add("slide-out");
+                  setTimeout(function() {
+                    toastDiv.classList.add("invisible");
+                    toastDiv.classList.remove("slide-out");
+                  }, 500);
+                }, 5000);
+              }, 2000);
+
+
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching get_vtt_string:', error);
+          });
+      }
+      })
+    })
+
+    const myButton = document.getElementById("submit");
+      myButton.addEventListener("click", function() {
+
+        // Get the value of the textarea element
+        const updatedSubtitleContent = document.getElementById('vttstring').value;
+        console.log(updatedSubtitleContent)
+
+        // Make AJAX request to Flask route
+       fetch('/add_subtitles', {
+       method: 'POST',
+       body: JSON.stringify({updated_vtt_string:updatedSubtitleContent}),
+       headers: {
+        'Content-Type': 'application/json'}
+      })
+
+        const popupContainer = document.getElementById('popup-container');
+        const popupContent = document.getElementById('popup-content')
+        // Hide the popup
+        popupContainer.classList.remove('visible');
+        popupContent.classList.add('hidden');
+
+        let intervalId = setInterval(updateSubtitledSslUrl, 5000);
+
+        function updateSubtitledSslUrl() {
+          // Make an AJAX request to the Flask app
+          fetch('/get_subtitled_ssl_url')
+            .then(response => response.json())
+            .then(data => {
+              // Update the DOM with the subtitled_ssl_url
+              const subtitled_ssl_url = data.subtitled_ssl_url;
+              console.log(subtitled_ssl_url);
+  
+              // Stop the interval if subtitled_ssl_url is not null
+              if (subtitled_ssl_url !== null) {
+                clearInterval(intervalId);
+  
+                // Update the href of the anchor tag in the list item with id "freelink"
+                const freeLink = document.querySelector("#freelink a");
+                freeLink.href = subtitled_ssl_url;
+  
+                // Show the done class
+                const subtitlingclass = document.getElementById('subtitling');
+                subtitlingclass.classList.add("hidden")
+                const doneclass = document.getElementById('done');
+                doneclass.classList.remove("hidden")
+  
+                // Remove the "hidden" class from the button and dropdown elements
+                const button = document.querySelector("#dropdownHoverButton");
+                button.classList.remove("hidden");
+              }
+            })}
+
+      });
+
+      const quranButton = document.getElementById("tashkeel");
+      quranButton.addEventListener("click", function() {
+
+        // Get the value of the textarea element
+        const subtitleContent = document.getElementById('vttstring').value;
+        console.log(subtitleContent)
+
+        // Make AJAX request to Flask route
+       fetch('/check_with_quran', {
+       method: 'POST',
+       body: JSON.stringify({input_string:subtitleContent}),
+       headers: {
+        'Content-Type': 'application/json'}
+      })
+
+        let intervalId = setInterval(getQuranString, 3000);
+
+        function getQuranString() {
+          // Make an AJAX request to the Flask app
+          fetch('/get_quran_string')
+            .then(response => response.json())
+            .then(data => {
+
+              // Update the DOM with the subtitled_ssl_url
+              const quranStringOutput = data.get_quran_string;
+  
+              // Stop the interval if subtitled_ssl_url is not null
+              if (quranStringOutput !== null) {
+                clearInterval(intervalId);
+                document.getElementById('vttstring').value = quranStringOutput
+
+              }
+            })}
+
+      });
+
+      const translateButton = document.getElementById("qurantranslate");
+      translateButton.addEventListener("click", function() {
+
+        // Get the value of the textarea element
+        const textareaContent = document.getElementById('vttstring').value;
+
+        // Make AJAX request to Flask route
+       fetch('/check_with_translation', {
+       method: 'POST',
+       body: JSON.stringify({input_string:textareaContent}),
+       headers: {
+        'Content-Type': 'application/json'}
+      })
+
+        let intervalId = setInterval(getQuranString, 3000);
+
+        function getQuranString() {
+          // Make an AJAX request to the Flask app
+          fetch('/get_translation_string')
+            .then(response => response.json())
+            .then(data => {
+
+              // Update the DOM with the subtitled_ssl_url
+              const translationStringOutput = data.output_translation_string;
+  
+              // Stop the interval if subtitled_ssl_url is not null
+              if (translationStringOutput !== null) {
+                clearInterval(intervalId);
+                document.getElementById('vttstring').value = translationStringOutput
+
+              }
+            })}
+
+      });
+
+      
+
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+
